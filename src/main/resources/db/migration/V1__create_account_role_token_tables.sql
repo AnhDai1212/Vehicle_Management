@@ -1,0 +1,36 @@
+CREATE TABLE roles (
+    id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE accounts (
+    id VARCHAR(20) PRIMARY KEY,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(60) NOT NULL,
+    is_active TINYINT(1) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE accounts_roles (
+    account_id VARCHAR(20) NOT NULL,
+    role_id VARCHAR(20) NOT NULL,
+    PRIMARY KEY (account_id, role_id),
+    FOREIGN KEY (account_id) REFERENCES accounts(id),
+    FOREIGN KEY (role_id) REFERENCES roles(id)
+);
+
+CREATE TABLE refresh_tokens (
+    id VARCHAR(20) PRIMARY KEY,
+    account_id VARCHAR(20) UNIQUE,
+    expired_time TIMESTAMP NOT NULL,
+    is_revoked TINYINT(1),
+    refresh_token VARCHAR(60) NOT NULL UNIQUE,
+    revoked_at TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);

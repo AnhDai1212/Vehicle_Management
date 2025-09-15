@@ -1,0 +1,13 @@
+ALTER TABLE customers ADD COLUMN logo_path TEXT;
+
+CREATE TABLE vehicle_models (
+    id VARCHAR(20) PRIMARY KEY,
+    code VARCHAR(60) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    is_active TINYINT(1) NOT NULL,
+    customer_id VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_vehicle_model_customer FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
+);
